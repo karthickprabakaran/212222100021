@@ -1,5 +1,3 @@
-// src/components/UrlStatsPage.jsx
-
 import React, { useEffect, useState } from 'react';
 import {
   Box,
