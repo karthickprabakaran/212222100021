@@ -11,7 +11,7 @@ const Header = () => {
           </Typography>
         </Box>
         <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
-          Made by Karthick
+          Made by Karthick Prabakaran
         </Typography>
       </Toolbar>
     </AppBar>
