@@ -65,3 +65,18 @@ npm run dev
 -  **Analytics Tracking** - Simple yet effective usage metrics
 
 ---
+
+
+# Freelance Projects : 
+
+https://srijaishanthi.com/
+
+https://trulytaped.com/
+
+https://hassanacademia.com/
+
+https://acetabletennisacademy.in/
+
+https://karthickprabakaran.github.io/Makthoon-Portfolio/
+
+https://spectale.in/
