@@ -1,4 +1,4 @@
-// src/components/RedirectHandler.jsx
+
 
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ const RedirectHandler = () => {
 
     if (entryIndex === -1) {
       log('frontend', 'error', 'handler', `Shortcode ${shortcode} not found`);
-      navigate('/'); // redirect to home
+      navigate('/');
       return;
     }
 
@@ -25,14 +25,14 @@ const RedirectHandler = () => {
 
     if (new Date(entry.expiresAt) < now) {
       log('frontend', 'warn', 'handler', `Shortcode ${shortcode} expired`);
-      navigate('/'); // expired
+      navigate('/');
       return;
     }
 
     const click = {
       timestamp: new Date().toISOString(),
       source: document.referrer || 'direct',
-      location: 'Unknown', // Can be improved with external API
+      location: 'Unknown',
     };
 
     urls[entryIndex].clicks.push(click);
@@ -40,7 +40,6 @@ const RedirectHandler = () => {
 
     log('frontend', 'info', 'handler', `Redirecting shortcode ${shortcode} to ${entry.originalUrl}`);
 
-    // Delay to ensure log is sent
     setTimeout(() => {
       window.location.href = entry.originalUrl;
     }, 300);
