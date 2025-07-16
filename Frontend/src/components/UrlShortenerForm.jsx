@@ -6,7 +6,10 @@ import {
   Typography,
   Grid,
   Paper,
-  Alert
+  Alert,
+  Stack,
+  Container,
+  Divider
 } from '@mui/material';
 import { log } from '../services/services';
 import { isValidUrl, isValidShortcode, isPositiveInteger } from '../utils/validator';
@@ -27,7 +30,10 @@ const UrlShortenerForm = () => {
 
   const addEntry = () => {
     if (entries.length < MAX_ENTRIES) {
-      setEntries([...entries, { url: '', shortcode: '', validity: '', result: null, error: '' }]);
+      setEntries([
+        ...entries,
+        { url: '', shortcode: '', validity: '', result: null, error: '' }
+      ]);
     }
   };
 
@@ -65,7 +71,6 @@ const UrlShortenerForm = () => {
         expiresAt
       };
 
-      // Save to localStorage for stats + redirect use
       const existing = JSON.parse(localStorage.getItem('shortUrls')) || [];
       existing.push({
         originalUrl: entry.url,
@@ -85,67 +90,95 @@ const UrlShortenerForm = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
-      <Typography variant="h4" gutterBottom>URL Shortener</Typography>
+    <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
+      <Paper elevation={4} sx={{ p: 4, borderRadius: 3 }}>
+        <Typography variant="h4" fontWeight={600} gutterBottom>
+          URL Shortener
+        </Typography>
+        <Typography variant="body1" color="text.secondary" gutterBottom>
+          You can shorten up to {MAX_ENTRIES} URLs at once. Optionally specify a custom shortcode and expiry in minutes.
+        </Typography>
 
-      {entries.map((entry, index) => (
-        <Paper key={index} sx={{ p: 2, mb: 2 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Long URL"
-                value={entry.url}
-                onChange={(e) => handleChange(index, 'url', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Custom Shortcode (optional)"
-                value={entry.shortcode}
-                onChange={(e) => handleChange(index, 'shortcode', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Validity in Minutes (optional)"
-                type="number"
-                value={entry.validity}
-                onChange={(e) => handleChange(index, 'validity', e.target.value)}
-              />
-            </Grid>
-            {entry.error && (
-              <Grid item xs={12}>
-                <Alert severity="error">{entry.error}</Alert>
-              </Grid>
-            )}
-            {entry.result && (
-              <Grid item xs={12}>
-                <Alert severity="success">
-                  Short URL: <a href={entry.result.shortUrl}>{entry.result.shortUrl}</a> <br />
-                  Expires at: {entry.result.expiresAt.toLocaleString()}
-                </Alert>
-              </Grid>
-            )}
-          </Grid>
-        </Paper>
-      ))}
+        <Divider sx={{ my: 2 }} />
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-        <Button
-          variant="outlined"
-          onClick={addEntry}
-          disabled={entries.length >= MAX_ENTRIES}
-        >
-          Add Another URL
-        </Button>
-        <Button variant="contained" onClick={handleSubmit}>
-          Shorten URLs
-        </Button>
-      </Box>
-    </Box>
+        {entries.map((entry, index) => (
+          <Paper
+            key={index}
+            elevation={2}
+            sx={{
+              p: 3,
+              mb: 3,
+              backgroundColor: '#f9f9f9',
+              border: '1px solid #e0e0e0',
+              borderRadius: 2
+            }}
+          >
+            <Typography variant="h6" gutterBottom>
+              URL #{index + 1}
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Long URL"
+                  value={entry.url}
+                  onChange={(e) => handleChange(index, 'url', e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  label="Custom Shortcode (optional)"
+                  value={entry.shortcode}
+                  onChange={(e) => handleChange(index, 'shortcode', e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  label="Validity in Minutes (optional)"
+                  type="number"
+                  value={entry.validity}
+                  onChange={(e) => handleChange(index, 'validity', e.target.value)}
+                />
+              </Grid>
+
+              {entry.error && (
+                <Grid item xs={12}>
+                  <Alert severity="error">{entry.error}</Alert>
+                </Grid>
+              )}
+
+              {entry.result && (
+                <Grid item xs={12}>
+                  <Alert severity="success">
+                    <strong>Short URL:</strong>{' '}
+                    <a href={entry.result.shortUrl} target="_blank" rel="noreferrer">
+                      {entry.result.shortUrl}
+                    </a>
+                    <br />
+                    <strong>Expires at:</strong> {entry.result.expiresAt.toLocaleString()}
+                  </Alert>
+                </Grid>
+              )}
+            </Grid>
+          </Paper>
+        ))}
+
+        <Stack direction="row" spacing={2} justifyContent="space-between" mt={3}>
+          <Button
+            variant="outlined"
+            onClick={addEntry}
+            disabled={entries.length >= MAX_ENTRIES}
+          >
+            Add Another URL
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Shorten URLs
+          </Button>
+        </Stack>
+      </Paper>
+    </Container>
   );
 };
 
