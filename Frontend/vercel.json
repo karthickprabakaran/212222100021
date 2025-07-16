@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/:shortcode", "destination": "/" },
+    { "source": "/stats/:shortcode", "destination": "/" },
+    { "source": "/stats", "destination": "/" }
+  ]
+}
