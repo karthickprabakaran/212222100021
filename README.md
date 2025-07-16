@@ -4,7 +4,7 @@
 > A sleek React URL shortener with comprehensive error logging middleware
 
 
-## Live Link (To Experience the whole functionality, clone the Project and run locally) : 
+## Live Link (Experience The Project Here) : 
 
 https://212222100021-fejb.vercel.app/
 
