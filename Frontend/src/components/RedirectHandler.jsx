@@ -1,5 +1,3 @@
-
-
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { log } from '../services/services';
@@ -10,12 +8,14 @@ const RedirectHandler = () => {
 
   useEffect(() => {
     const urls = JSON.parse(localStorage.getItem('shortUrls')) || [];
+
     const entryIndex = urls.findIndex((u) =>
       u.shortUrl.endsWith(`/${shortcode}`)
     );
 
     if (entryIndex === -1) {
       log('frontend', 'error', 'handler', `Shortcode ${shortcode} not found`);
+      alert('Short link not found.');
       navigate('/');
       return;
     }
@@ -25,6 +25,7 @@ const RedirectHandler = () => {
 
     if (new Date(entry.expiresAt) < now) {
       log('frontend', 'warn', 'handler', `Shortcode ${shortcode} expired`);
+      alert('Short link has expired.');
       navigate('/');
       return;
     }
@@ -38,7 +39,12 @@ const RedirectHandler = () => {
     urls[entryIndex].clicks.push(click);
     localStorage.setItem('shortUrls', JSON.stringify(urls));
 
-    log('frontend', 'info', 'handler', `Redirecting shortcode ${shortcode} to ${entry.originalUrl}`);
+    log(
+      'frontend',
+      'info',
+      'handler',
+      `Redirecting shortcode ${shortcode} to ${entry.originalUrl}`
+    );
 
     setTimeout(() => {
       window.location.href = entry.originalUrl;
