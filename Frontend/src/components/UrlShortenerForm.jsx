@@ -52,6 +52,8 @@ const UrlShortenerForm = () => {
 
   const handleSubmit = async () => {
     const updated = [...entries];
+    const baseUrl = window.location.origin;
+
     for (let i = 0; i < updated.length; i++) {
       const entry = updated[i];
       const error = validateEntry(entry);
@@ -66,15 +68,16 @@ const UrlShortenerForm = () => {
       const createdAt = new Date();
       const expiresAt = new Date(createdAt.getTime() + validity * 60000);
 
+      const shortUrl = `${baseUrl}/${shortcode}`;
       updated[i].result = {
-        shortUrl: `http://localhost:3000/${shortcode}`,
+        shortUrl,
         expiresAt
       };
 
       const existing = JSON.parse(localStorage.getItem('shortUrls')) || [];
       existing.push({
         originalUrl: entry.url,
-        shortUrl: `http://localhost:3000/${shortcode}`,
+        shortUrl,
         shortcode,
         createdAt,
         expiresAt,
